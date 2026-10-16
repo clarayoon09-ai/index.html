@@ -3,54 +3,63 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>오늘의 영어 · 단어 목록 (iPad/Phone friendly)</title>
+<title>오늘의 영어 · 단어 목록 (iPad/Phone/PC 모두 대응)</title>
 <meta name="theme-color" content="#f6f7fb" />
 <style>
 :root{
   --bg:#f6f7fb; --paper:#fff; --ink:#22283a; --muted:#6f7688;
-  --accent:#6259d9; --line:#e8eaf2; --radius:12px; --gap:1rem; --touch-size:44px;
-  --max-width:1180px; --card-min:300px;
+  --accent:#6259d9; --light:#efedff; --line:#e8eaf2;
+  --green:#e2f7eb; --red:#ffeded; --radius:12px; --gap:1rem;
+  --touch-size:44px; --max-width:1180px; --card-min:300px;
 }
 html{font-size:16px}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-.header{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.125rem;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:80}
+.header{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.125rem;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .brand{font-weight:900;font-size:1.125rem}
-.nav{display:flex;gap:0.5rem;align-items:center}
+.nav{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap}
 .tab{background:transparent;border:0;padding:0.5rem 0.75rem;border-radius:10px;color:var(--muted);font-weight:800;cursor:pointer;font-size:0.95rem}
-.tab.active{background:var(--light);color:var(--accent)}
+.tab.active{background:rgba(98,89,217,0.08);color:var(--accent)}
 .container{max-width:var(--max-width);margin:1.25rem auto;padding:0 1.125rem}
 .toolbar{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:0.75rem}
 .input{padding:0.625rem;border-radius:10px;border:1px solid var(--line);flex:1;min-width:180px;font-size:0.95rem}
 .small{padding:0.5rem 0.75rem;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--accent);cursor:pointer;font-weight:800;min-height:var(--touch-size)}
 .exportBtn, #downloadApp{background:var(--accent);color:#fff;border:0;padding:0.5rem 0.9rem;border-radius:10px;font-weight:800;cursor:pointer;min-height:var(--touch-size)}
-
 .view { background:transparent; min-height:60vh; }
 .list-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr)); gap:var(--gap); align-items:start; }
-
-/* Each card (pre-rendered & dynamic) */
-.list-card{ background:var(--paper);border-radius:var(--radius);border:1px solid #eef0f6;padding:1rem;display:flex;flex-direction:column;gap:0.5rem; box-shadow: 0 6px 18px rgba(8,10,30,0.04); }
+.list-card{
+  background:var(--paper);
+  border-radius:var(--radius);
+  border:1px solid #eef0f6;
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.55rem;
+  box-shadow:0 6px 18px rgba(8,10,30,0.04);
+}
 .title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:0.75rem}
 .word-title{font-weight:900;font-size:1.5rem;line-height:1.05}
-.word-meaning{font-weight:800;font-size:1.05rem;color:var(--muted)}
+.word-meaning{font-weight:800;font-size:1.02rem;color:var(--muted)}
 .pron{font-size:0.95rem;color:var(--muted);font-weight:700}
-.small-meta{font-size:0.95rem;color:var(--muted)}
-.block {background:#fafbfd;border:1px solid #f0f2fb;padding:0.6rem;border-radius:8px;font-size:0.95rem;color:var(--muted)}
-.actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem}
-.actions .small{min-width:6.5rem}
-
+.block{background:#fafbfd;border:1px solid #f0f2fb;padding:0.6rem;border-radius:8px;font-size:0.95rem;color:var(--muted)}
+.actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.4rem}
 .today-list{display:grid;gap:0.5rem}
 .today-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem;border-radius:10px;background:#fff;border:1px solid var(--line)}
-
-.panel { position:fixed; width:min(92vw,360px); min-height:120px; background:#fff; border:1px solid rgba(0,0,0,0.08); box-shadow:0 8px 30px rgba(10,12,30,0.08); border-radius:10px; z-index:130; overflow:hidden; display:flex;flex-direction:column; touch-action:none; }
+#quizModalBackdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,12,30,0.55);z-index:140;padding:1rem}
+#quizModal{width:100%;max-width:1100px;height:86vh;background:var(--paper);border-radius:12px;padding:1rem;overflow:auto;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,0.3);display:flex;flex-direction:column}
+.quizChoices{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;width:100%;max-width:920px;margin-top:1rem}
+.choiceBtn{padding:0.85rem;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:800;cursor:pointer;font-size:1rem}
+.choiceBtn.correct{background:var(--green);border-color:#8ad1a4}
+.choiceBtn.wrong{background:var(--red);border-color:#e8a0a0}
+.panel{position:fixed;width:min(92vw,360px);min-height:120px;background:#fff;border:1px solid rgba(0,0,0,0.08);box-shadow:0 8px 30px rgba(10,12,30,0.08);border-radius:10px;z-index:130;overflow:hidden;display:flex;flex-direction:column;touch-action:none}
 .panel .head{background:var(--accent);color:#fff;padding:10px;cursor:grab;display:flex;justify-content:space-between;align-items:center}
+.panel .head:active{cursor:grabbing}
 .panel .body{padding:0.75rem;overflow:auto;max-height:60vh}
 button:focus{outline:3px solid rgba(98,89,217,0.18);outline-offset:2px}
 @media (max-width:900px){ :root{--card-min:280px} .word-title{font-size:1.25rem} }
 @media (max-width:520px){ :root{--card-min:100%} .word-title{font-size:1.05rem} .word-meaning{font-size:0.98rem} .pron{font-size:0.9rem} .actions .small{flex:1;min-width:0} .toolbar{gap:0.45rem} .input{min-width:120px} }
-
-.noscript-box{background:#fff5e6;border:1px solid #ffebc8;padding:12px;border-radius:10px;margin-bottom:12px;color:#7a5d00}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:rgba(0,0,0,0.78);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;z-index:200;display:none}
+.noscript-box{background:#fff5e6;border:1px solid #ffebc8;padding:12px;border-radius:10px;margin-bottom:12px;color:#7a5d00}
 </style>
 </head>
 <body>
@@ -71,133 +80,1143 @@ button:focus{outline:3px solid rgba(98,89,217,0.18);outline-offset:2px}
     <input id="globalSearch" class="input" placeholder="검색: 영어/한국어/예문/유의어/반의어/다의어/발음" aria-label="검색" />
     <label style="display:flex;align-items:center;gap:6px;color:var(--muted)"><input type="checkbox" id="allowDupChk"> 오늘 중복 허용</label>
     <label style="display:flex;align-items:center;gap:6px;color:var(--muted)"><input type="checkbox" id="enableTTS" checked> 스피커 켜기</label>
-    <button class="small" id="openQuizPanel" aria-controls="quizModalBackdrop">퀴즈 창 열기</button>
+    <button class="small" id="openQuizPanel">퀴즈 창 열기</button>
   </div>
 
   <noscript>
     <div class="noscript-box">
-      현재 브라우저에서 JavaScript가 비활성화되어 있습니다. 전체 기능(검색·퀴즈·TTS 등)을 사용하려면 이 파일을 Safari(또는 다른 모바일 브라우저)에서 열고, JavaScript를 허용하세요.
+      JavaScript가 비활성화되어 있어 일부 기능이 제한됩니다. Safari/Chrome 등 브라우저에서 열면 검색·퀴즈·TTS 등이 정상 작동합니다.
     </div>
   </noscript>
 
   <section id="vocab" class="view" aria-live="polite">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
       <h2 style="margin:0">전체 단어 목록</h2>
-      <div style="color:var(--muted)">(미리 렌더된 카드 포함 — Quick Look에서도 보입니다)</div>
+      <div style="color:var(--muted)">유의어 · 반의어 · 다의어 · 관련형 · 발음 · 예문 포함</div>
     </div>
 
-    <!-- PRE-RENDERED CARDS: 이 블록은 JS가 실행되지 않아도 표시됩니다 (Quick Look / 미리보기 대응) -->
     <div id="listGrid" class="list-grid" aria-live="polite">
-      <!-- core sample words -->
+      <!-- 12 base words -->
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Appreciate</div>
-          <div class="pron">/əˈpriːʃieɪt/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Appreciate</div><div class="pron">/əˈpriːʃieɪt/</div></div>
         <div class="word-meaning">고마워하다</div>
+        <div class="block"><strong>유의어:</strong> value, admire, respect</div>
+        <div class="block"><strong>반의어:</strong> ignore, despise</div>
+        <div class="block"><strong>다의어:</strong> to value, to show gratitude for / to recognize the worth of</div>
+        <div class="block"><strong>관련형:</strong> appreciation, appreciative, appreciably</div>
+        <div class="block"><strong>예문:</strong> I really appreciate your advice.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Hesitate</div>
-          <div class="pron">/ˈhɛzɪteɪt/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Hesitate</div><div class="pron">/ˈhɛzɪteɪt/</div></div>
         <div class="word-meaning">망설이다</div>
+        <div class="block"><strong>유의어:</strong> pause, waver, delay</div>
+        <div class="block"><strong>반의어:</strong> proceed, decide, act</div>
+        <div class="block"><strong>다의어:</strong> to pause before acting / to be reluctant</div>
+        <div class="block"><strong>관련형:</strong> hesitation, hesitant</div>
+        <div class="block"><strong>예문:</strong> Don’t hesitate to ask questions.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Consider</div>
-          <div class="pron">/kənˈsɪdər/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Consider</div><div class="pron">/kənˈsɪdər/</div></div>
         <div class="word-meaning">고려하다</div>
+        <div class="block"><strong>유의어:</strong> think about, weigh, evaluate</div>
+        <div class="block"><strong>반의어:</strong> ignore, dismiss</div>
+        <div class="block"><strong>다의어:</strong> to think carefully about / to regard as</div>
+        <div class="block"><strong>관련형:</strong> consideration, considerate</div>
+        <div class="block"><strong>예문:</strong> I’ll consider your suggestion.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Manage</div>
-          <div class="pron">/ˈmænɪdʒ/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Manage</div><div class="pron">/ˈmænɪdʒ/</div></div>
         <div class="word-meaning">해내다</div>
+        <div class="block"><strong>유의어:</strong> handle, cope, succeed</div>
+        <div class="block"><strong>반의어:</strong> fail, lose</div>
+        <div class="block"><strong>다의어:</strong> to control / to succeed in doing</div>
+        <div class="block"><strong>관련형:</strong> management, manageable</div>
+        <div class="block"><strong>예문:</strong> I managed to finish it on time.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Realize</div>
-          <div class="pron">/ˈriːəlaɪz/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Realize</div><div class="pron">/ˈriːəlaɪz/</div></div>
         <div class="word-meaning">깨닫다</div>
+        <div class="block"><strong>유의어:</strong> recognize, understand, grasp</div>
+        <div class="block"><strong>반의어:</strong> ignore, miss</div>
+        <div class="block"><strong>다의어:</strong> to become aware of / to achieve</div>
+        <div class="block"><strong>관련형:</strong> realization, realistic</div>
+        <div class="block"><strong>예문:</strong> I realized I was wrong.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Avoid</div>
-          <div class="pron">/əˈvɔɪd/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Avoid</div><div class="pron">/əˈvɔɪd/</div></div>
         <div class="word-meaning">피하다</div>
+        <div class="block"><strong>유의어:</strong> evade, shun, prevent</div>
+        <div class="block"><strong>반의어:</strong> seek, invite, confront</div>
+        <div class="block"><strong>다의어:</strong> to stay away from / to keep from happening</div>
+        <div class="block"><strong>관련형:</strong> avoidance, avoidable</div>
+        <div class="block"><strong>예문:</strong> I try to avoid making the same mistake.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Recommend</div>
-          <div class="pron">/ˌrɛkəˈmɛnd/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Recommend</div><div class="pron">/ˌrɛkəˈmɛnd/</div></div>
         <div class="word-meaning">추천하다</div>
+        <div class="block"><strong>유의어:</strong> suggest, propose, advise</div>
+        <div class="block"><strong>반의어:</strong> discourage, warn against</div>
+        <div class="block"><strong>다의어:</strong> to suggest as good / to speak in favor of</div>
+        <div class="block"><strong>관련형:</strong> recommendation, recommended</div>
+        <div class="block"><strong>예문:</strong> Would you recommend this book?</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Reliable</div>
-          <div class="pron">/rɪˈlaɪəbl/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Reliable</div><div class="pron">/rɪˈlaɪəbl/</div></div>
         <div class="word-meaning">믿을 수 있는</div>
+        <div class="block"><strong>유의어:</strong> dependable, trustworthy, stable</div>
+        <div class="block"><strong>반의어:</strong> unreliable, flaky</div>
+        <div class="block"><strong>다의어:</strong> dependable / can be trusted</div>
+        <div class="block"><strong>관련형:</strong> reliability, rely</div>
+        <div class="block"><strong>예문:</strong> She’s a reliable friend.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Confident</div>
-          <div class="pron">/ˈkɒnfɪdənt/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Confident</div><div class="pron">/ˈkɒnfɪdənt/</div></div>
         <div class="word-meaning">자신감 있는</div>
+        <div class="block"><strong>유의어:</strong> assured, self-assured, bold</div>
+        <div class="block"><strong>반의어:</strong> insecure, timid</div>
+        <div class="block"><strong>다의어:</strong> feeling sure / showing certainty</div>
+        <div class="block"><strong>관련형:</strong> confidence, confidently</div>
+        <div class="block"><strong>예문:</strong> I feel more confident now.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Awkward</div>
-          <div class="pron">/ˈɔːkwəd/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Awkward</div><div class="pron">/ˈɔːkwəd/</div></div>
         <div class="word-meaning">어색한</div>
+        <div class="block"><strong>유의어:</strong> uncomfortable, clumsy, uneasy</div>
+        <div class="block"><strong>반의어:</strong> comfortable, natural</div>
+        <div class="block"><strong>다의어:</strong> socially uncomfortable / difficult to use</div>
+        <div class="block"><strong>관련형:</strong> awkwardness</div>
+        <div class="block"><strong>예문:</strong> There was an awkward silence.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Figure out</div>
-          <div class="pron">/ˈfɪɡər aʊt/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Figure out</div><div class="pron">/ˈfɪɡər aʊt/</div></div>
         <div class="word-meaning">알아내다</div>
+        <div class="block"><strong>유의어:</strong> solve, determine, understand</div>
+        <div class="block"><strong>반의어:</strong> miss, ignore</div>
+        <div class="block"><strong>다의어:</strong> to discover by reasoning / to understand</div>
+        <div class="block"><strong>관련형:</strong> figuring, figure</div>
+        <div class="block"><strong>예문:</strong> I’ll figure out how it works.</div>
       </article>
 
       <article class="list-card" role="article" tabindex="0">
-        <div class="title-row">
-          <div class="word-title">Give up</div>
-          <div class="pron">/ɡɪv ʌp/</div>
-        </div>
+        <div class="title-row"><div class="word-title">Give up</div><div class="pron">/ɡɪv ʌp/</div></div>
         <div class="word-meaning">포기하다</div>
+        <div class="block"><strong>유의어:</strong> surrender, quit, abandon</div>
+        <div class="block"><strong>반의어:</strong> persist, continue</div>
+        <div class="block"><strong>다의어:</strong> stop trying / surrender</div>
+        <div class="block"><strong>관련형:</strong> giving up, quitter</div>
+        <div class="block"><strong>예문:</strong> Don’t give up too easily.</div>
       </article>
 
-      <!-- user list 301-400 (pre-rendered for Quick Look) -->
-      <!-- I'll include all the user's words here as cards so Quick Look displays them even without JS -->
-      <!-- (For brevity in the chat I include the full set — you will have the complete file when saved) -->
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Persuade</div><div class="pron">/pərˈsweɪd/</div></div><div class="word-meaning">설득하다</div></article>
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Gaze</div><div class="pron">/ɡeɪz/</div></div><div class="word-meaning">응시하다</div></article>
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Restore</div><div class="pron">/rɪˈstɔːr/</div></div><div class="word-meaning">회복시키다</div></article>
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Heal</div><div class="pron">/hiːl/</div></div><div class="word-meaning">고치다</div></article>
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Acquire</div><div class="pron">/əˈkwaɪər/</div></div><div class="word-meaning">얻다</div></article>
+      <!-- 301-400 -->
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Persuade</div><div class="pron">/pərˈsweɪd/</div></div>
+        <div class="word-meaning">설득하다</div>
+        <div class="block"><strong>유의어:</strong> convince, influence, sway</div>
+        <div class="block"><strong>반의어:</strong> dissuade, discourage</div>
+        <div class="block"><strong>다의어:</strong> to cause someone to do something by argument / to induce</div>
+        <div class="block"><strong>관련형:</strong> persuasion, persuasive, persuadable</div>
+        <div class="block"><strong>예문:</strong> I tried to persuade him to stay.</div>
+      </article>
 
-      <!-- ... (중간 생략 없이 실제 파일에서는 301~400번까지 모든 단어 카드가 들어있습니다) -->
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Gaze</div><div class="pron">/ɡeɪz/</div></div>
+        <div class="word-meaning">응시하다</div>
+        <div class="block"><strong>유의어:</strong> stare, peer, look</div>
+        <div class="block"><strong>반의어:</strong> look away, avert</div>
+        <div class="block"><strong>다의어:</strong> to look steadily / to stare intently</div>
+        <div class="block"><strong>관련형:</strong> gaze, gazing, gazer</div>
+        <div class="block"><strong>예문:</strong> She gave me a long gaze before speaking.</div>
+      </article>
 
-      <!-- 마지막 예시 카드 -->
-      <article class="list-card" role="article" tabindex="0"><div class="title-row"><div class="word-title">Submit</div><div class="pron">/səbˈmɪt/</div></div><div class="word-meaning">복종시키다, 제출하다</div></article>
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Restore</div><div class="pron">/rɪˈstɔːr/</div></div>
+        <div class="word-meaning">회복시키다</div>
+        <div class="block"><strong>유의어:</strong> recover, renew, repair</div>
+        <div class="block"><strong>반의어:</strong> ruin, destroy</div>
+        <div class="block"><strong>다의어:</strong> to return to a former condition / to rebuild</div>
+        <div class="block"><strong>관련형:</strong> restoration, restorative, restored</div>
+        <div class="block"><strong>예문:</strong> We need to restore the old building.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Heal</div><div class="pron">/hiːl/</div></div>
+        <div class="word-meaning">고치다</div>
+        <div class="block"><strong>유의어:</strong> cure, mend, remedy</div>
+        <div class="block"><strong>반의어:</strong> harm, injure</div>
+        <div class="block"><strong>다의어:</strong> to make healthy again / to recover</div>
+        <div class="block"><strong>관련형:</strong> healer, healing, health</div>
+        <div class="block"><strong>예문:</strong> The medicine will heal the wound.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Acquire</div><div class="pron">/əˈkwaɪər/</div></div>
+        <div class="word-meaning">얻다</div>
+        <div class="block"><strong>유의어:</strong> obtain, gain, procure</div>
+        <div class="block"><strong>반의어:</strong> lose, relinquish</div>
+        <div class="block"><strong>다의어:</strong> to gain by effort / to come into possession of</div>
+        <div class="block"><strong>관련형:</strong> acquisition, acquisitive</div>
+        <div class="block"><strong>예문:</strong> He acquired a lot of useful experience.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Halt</div><div class="pron">/hɔːlt/</div></div>
+        <div class="word-meaning">서다 (정지)</div>
+        <div class="block"><strong>유의어:</strong> stop, cease, pause</div>
+        <div class="block"><strong>반의어:</strong> continue, proceed</div>
+        <div class="block"><strong>다의어:</strong> to stop moving / to bring to a stop</div>
+        <div class="block"><strong>관련형:</strong> halting, haltless</div>
+        <div class="block"><strong>예문:</strong> The train halted at the station.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Maintain</div><div class="pron">/meɪnˈteɪn/</div></div>
+        <div class="word-meaning">유지하다, 주장하다</div>
+        <div class="block"><strong>유의어:</strong> preserve, sustain, keep</div>
+        <div class="block"><strong>반의어:</strong> lose, abandon</div>
+        <div class="block"><strong>다의어:</strong> to keep in good condition / to assert</div>
+        <div class="block"><strong>관련형:</strong> maintenance, maintainable</div>
+        <div class="block"><strong>예문:</strong> We must maintain the quality of service.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Mourn</div><div class="pron">/mɔːrn/</div></div>
+        <div class="word-meaning">슬퍼하다</div>
+        <div class="block"><strong>유의어:</strong> grieve, lament, sorrow</div>
+        <div class="block"><strong>반의어:</strong> celebrate, rejoice</div>
+        <div class="block"><strong>다의어:</strong> to feel grief / to show sadness at loss</div>
+        <div class="block"><strong>관련형:</strong> mourning, mourner</div>
+        <div class="block"><strong>예문:</strong> They mourned the loss of their friend.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Suspect</div><div class="pron">/ˈsʌspɛkt/</div></div>
+        <div class="word-meaning">의심하다</div>
+        <div class="block"><strong>유의어:</strong> doubt, mistrust, question</div>
+        <div class="block"><strong>반의어:</strong> trust, believe</div>
+        <div class="block"><strong>다의어:</strong> to doubt / a person believed to be guilty</div>
+        <div class="block"><strong>관련형:</strong> suspicion, suspicious</div>
+        <div class="block"><strong>예문:</strong> They suspect he is hiding something.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Grumble</div><div class="pron">/ˈɡrʌmbəl/</div></div>
+        <div class="word-meaning">불평하다</div>
+        <div class="block"><strong>유의어:</strong> complain, mutter, gripe</div>
+        <div class="block"><strong>반의어:</strong> praise, applaud</div>
+        <div class="block"><strong>다의어:</strong> to complain quietly / to mutter</div>
+        <div class="block"><strong>관련형:</strong> grumble, grumbler</div>
+        <div class="block"><strong>예문:</strong> He grumbled about the noisy neighbors.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Entertain</div><div class="pron">/ˌɛntərˈteɪn/</div></div>
+        <div class="word-meaning">즐겁게 하다</div>
+        <div class="block"><strong>유의어:</strong> amuse, delight, host</div>
+        <div class="block"><strong>반의어:</strong> bore, annoy</div>
+        <div class="block"><strong>다의어:</strong> to amuse / to invite someone in</div>
+        <div class="block"><strong>관련형:</strong> entertainment, entertainer</div>
+        <div class="block"><strong>예문:</strong> The show was meant to entertain the audience.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Utilize</div><div class="pron">/ˈjuːtəlaɪz/</div></div>
+        <div class="word-meaning">이용하다</div>
+        <div class="block"><strong>유의어:</strong> use, employ, apply</div>
+        <div class="block"><strong>반의어:</strong> waste, ignore</div>
+        <div class="block"><strong>다의어:</strong> to make practical use of</div>
+        <div class="block"><strong>관련형:</strong> utilization, useful</div>
+        <div class="block"><strong>예문:</strong> We should utilize the available resources.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Convert</div><div class="pron">/kənˈvɜːrt/</div></div>
+        <div class="word-meaning">바꾸다</div>
+        <div class="block"><strong>유의어:</strong> change, transform, switch</div>
+        <div class="block"><strong>반의어:</strong> keep, preserve</div>
+        <div class="block"><strong>다의어:</strong> to transform / to change religion or belief</div>
+        <div class="block"><strong>관련형:</strong> conversion, convertible</div>
+        <div class="block"><strong>예문:</strong> They converted the old room into a studio.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Despise</div><div class="pron">/dɪˈspaɪz/</div></div>
+        <div class="word-meaning">경멸하다</div>
+        <div class="block"><strong>유의어:</strong> loathe, hate, detest</div>
+        <div class="block"><strong>반의어:</strong> admire, respect</div>
+        <div class="block"><strong>다의어:</strong> to regard with contempt</div>
+        <div class="block"><strong>관련형:</strong> despised, despicable</div>
+        <div class="block"><strong>예문:</strong> He despised dishonesty.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Commence</div><div class="pron">/kəˈmɛns/</div></div>
+        <div class="word-meaning">시작하다</div>
+        <div class="block"><strong>유의어:</strong> begin, start, initiate</div>
+        <div class="block"><strong>반의어:</strong> stop, end</div>
+        <div class="block"><strong>다의어:</strong> to begin formally</div>
+        <div class="block"><strong>관련형:</strong> commencement, commencement</div>
+        <div class="block"><strong>예문:</strong> The meeting commenced promptly.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Consume</div><div class="pron">/kənˈsjuːm/</div></div>
+        <div class="word-meaning">소비하다</div>
+        <div class="block"><strong>유의어:</strong> eat, use, exhaust</div>
+        <div class="block"><strong>반의어:</strong> save, conserve</div>
+        <div class="block"><strong>다의어:</strong> to use up / to devour</div>
+        <div class="block"><strong>관련형:</strong> consumption, consumer</div>
+        <div class="block"><strong>예문:</strong> The fire consumed the whole forest.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Assimilate</div><div class="pron">/əˈsɪmɪleɪt/</div></div>
+        <div class="word-meaning">동화하다</div>
+        <div class="block"><strong>유의어:</strong> absorb, integrate, adapt</div>
+        <div class="block"><strong>반의어:</strong> reject, exclude</div>
+        <div class="block"><strong>다의어:</strong> to absorb into a culture / to take in</div>
+        <div class="block"><strong>관련형:</strong> assimilation, assimilative</div>
+        <div class="block"><strong>예문:</strong> Immigrants often assimilate over time.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Impose</div><div class="pron">/ɪmˈpoʊz/</div></div>
+        <div class="word-meaning">부과하다, 강요하다</div>
+        <div class="block"><strong>유의어:</strong> enforce, force, apply</div>
+        <div class="block"><strong>반의어:</strong> remove, lift</div>
+        <div class="block"><strong>다의어:</strong> to force upon someone / to place on</div>
+        <div class="block"><strong>관련형:</strong> imposition, imposed</div>
+        <div class="block"><strong>예문:</strong> The government imposed new taxes.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Encounter</div><div class="pron">/ɪnˈkaʊntər/</div></div>
+        <div class="word-meaning">만나다</div>
+        <div class="block"><strong>유의어:</strong> meet, face, run into</div>
+        <div class="block"><strong>반의어:</strong> avoid, evade</div>
+        <div class="block"><strong>다의어:</strong> to meet unexpectedly / to experience</div>
+        <div class="block"><strong>관련형:</strong> encounter, encountered</div>
+        <div class="block"><strong>예문:</strong> We encountered a serious problem.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Release</div><div class="pron">/rɪˈliːs/</div></div>
+        <div class="word-meaning">해방하다, 면제하다</div>
+        <div class="block"><strong>유의어:</strong> free, let go, discharge</div>
+        <div class="block"><strong>반의어:</strong> confine, hold</div>
+        <div class="block"><strong>다의어:</strong> to set free / a statement issued publicly</div>
+        <div class="block"><strong>관련형:</strong> release, released</div>
+        <div class="block"><strong>예문:</strong> The company released a statement.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Specialize</div><div class="pron">/ˈspɛʃəlaɪz/</div></div>
+        <div class="word-meaning">전공하다, 전문화하다</div>
+        <div class="block"><strong>유의어:</strong> focus, concentrate, train</div>
+        <div class="block"><strong>반의어:</strong> generalize, broaden</div>
+        <div class="block"><strong>다의어:</strong> to focus on one area / to become expert in</div>
+        <div class="block"><strong>관련형:</strong> specialization, specialist</div>
+        <div class="block"><strong>예문:</strong> She specializes in international law.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Respond</div><div class="pron">/rɪˈspɒnd/</div></div>
+        <div class="word-meaning">응답하다</div>
+        <div class="block"><strong>유의어:</strong> answer, reply, react</div>
+        <div class="block"><strong>반의어:</strong> ignore, silence</div>
+        <div class="block"><strong>다의어:</strong> to answer / to react to something</div>
+        <div class="block"><strong>관련형:</strong> response, responsive</div>
+        <div class="block"><strong>예문:</strong> Please respond to the email as soon as possible.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Soar</div><div class="pron">/sɔːr/</div></div>
+        <div class="word-meaning">치솟다</div>
+        <div class="block"><strong>유의어:</strong> rise, climb, surge</div>
+        <div class="block"><strong>반의어:</strong> fall, drop</div>
+        <div class="block"><strong>다의어:</strong> to rise very high / to fly upward</div>
+        <div class="block"><strong>관련형:</strong> soaring, soar</div>
+        <div class="block"><strong>예문:</strong> The prices soared during the shortage.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Comprehend</div><div class="pron">/kɒmprɪˈhɛnd/</div></div>
+        <div class="word-meaning">이해하다</div>
+        <div class="block"><strong>유의어:</strong> understand, grasp, perceive</div>
+        <div class="block"><strong>반의어:</strong> misunderstand, ignore</div>
+        <div class="block"><strong>다의어:</strong> to understand fully / to include</div>
+        <div class="block"><strong>관련형:</strong> comprehension, comprehensive</div>
+        <div class="block"><strong>예문:</strong> I could not comprehend the message.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Detect</div><div class="pron">/dɪˈtɛkt/</div></div>
+        <div class="word-meaning">발견하다</div>
+        <div class="block"><strong>유의어:</strong> notice, discover, find</div>
+        <div class="block"><strong>반의어:</strong> miss, overlook</div>
+        <div class="block"><strong>다의어:</strong> to notice and identify / to discover</div>
+        <div class="block"><strong>관련형:</strong> detection, detector</div>
+        <div class="block"><strong>예문:</strong> The scanner detected a hidden object.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Qualify</div><div class="pron">/ˈkwɒlɪfaɪ/</div></div>
+        <div class="word-meaning">자격을 주다</div>
+        <div class="block"><strong>유의어:</strong> certify, authorize, meet requirements</div>
+        <div class="block"><strong>반의어:</strong> disqualify, reject</div>
+        <div class="block"><strong>다의어:</strong> to make eligible / to limit the meaning</div>
+        <div class="block"><strong>관련형:</strong> qualification, qualified</div>
+        <div class="block"><strong>예문:</strong> The training qualifies him for the job.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Decorate</div><div class="pron">/ˈdɛkəreɪt/</div></div>
+        <div class="word-meaning">장식하다</div>
+        <div class="block"><strong>유의어:</strong> adorn, beautify, embellish</div>
+        <div class="block"><strong>반의어:</strong> strip, deface</div>
+        <div class="block"><strong>다의어:</strong> to add ornament / to make attractive</div>
+        <div class="block"><strong>관련형:</strong> decoration, decorative</div>
+        <div class="block"><strong>예문:</strong> They decorated the room for the holiday.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Accelerate</div><div class="pron">/əkˈsɛləreɪt/</div></div>
+        <div class="word-meaning">속도를 더하다</div>
+        <div class="block"><strong>유의어:</strong> speed up, quicken, hasten</div>
+        <div class="block"><strong>반의어:</strong> slow down, delay</div>
+        <div class="block"><strong>다의어:</strong> to increase speed / to cause faster growth</div>
+        <div class="block"><strong>관련형:</strong> acceleration, accelerator</div>
+        <div class="block"><strong>예문:</strong> The car began to accelerate.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Betray</div><div class="pron">/bɪˈtreɪ/</div></div>
+        <div class="word-meaning">배반하다, 누설하다</div>
+        <div class="block"><strong>유의어:</strong> deceive, leak, abandon</div>
+        <div class="block"><strong>반의어:</strong> support, protect</div>
+        <div class="block"><strong>다의어:</strong> to be disloyal / to reveal secretly</div>
+        <div class="block"><strong>관련형:</strong> betrayal, traitor</div>
+        <div class="block"><strong>예문:</strong> He betrayed his friend’s trust.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Dominate</div><div class="pron">/ˈdɒmɪneɪt/</div></div>
+        <div class="word-meaning">통치하다, 지배하다</div>
+        <div class="block"><strong>유의어:</strong> rule, control, overpower</div>
+        <div class="block"><strong>반의어:</strong> obey, submit</div>
+        <div class="block"><strong>다의어:</strong> to control completely / to be most important</div>
+        <div class="block"><strong>관련형:</strong> domination, dominant</div>
+        <div class="block"><strong>예문:</strong> The company dominates the market.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Preserve</div><div class="pron">/prɪˈzɜːv/</div></div>
+        <div class="word-meaning">유지하다, 보존하다</div>
+        <div class="block"><strong>유의어:</strong> maintain, keep, conserve</div>
+        <div class="block"><strong>반의어:</strong> waste, destroy</div>
+        <div class="block"><strong>다의어:</strong> to keep safe / to maintain</div>
+        <div class="block"><strong>관련형:</strong> preservation, preservative</div>
+        <div class="block"><strong>예문:</strong> We should preserve the environment.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Entreat</div><div class="pron">/ɪnˈtriːt/</div></div>
+        <div class="word-meaning">간청하다</div>
+        <div class="block"><strong>유의어:</strong> beg, plead, implore</div>
+        <div class="block"><strong>반의어:</strong> command, dismiss</div>
+        <div class="block"><strong>다의어:</strong> to ask earnestly / to plead</div>
+        <div class="block"><strong>관련형:</strong> entreaty</div>
+        <div class="block"><strong>예문:</strong> She entreated him not to leave.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Lack</div><div class="pron">/læk/</div></div>
+        <div class="word-meaning">부족하다</div>
+        <div class="block"><strong>유의어:</strong> need, miss, be without</div>
+        <div class="block"><strong>반의어:</strong> have, possess</div>
+        <div class="block"><strong>다의어:</strong> to be without / a shortage</div>
+        <div class="block"><strong>관련형:</strong> lacking, lackluster</div>
+        <div class="block"><strong>예문:</strong> The team lacked experience.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Interrupt</div><div class="pron">/ˌɪntəˈrʌpt/</div></div>
+        <div class="word-meaning">방해하다, 중단하다</div>
+        <div class="block"><strong>유의어:</strong> disturb, cut off, stop</div>
+        <div class="block"><strong>반의어:</strong> continue, let proceed</div>
+        <div class="block"><strong>다의어:</strong> to break the flow / to interfere</div>
+        <div class="block"><strong>관련형:</strong> interruption, interruptive</div>
+        <div class="block"><strong>예문:</strong> Please don’t interrupt me mid-sentence.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Surpass</div><div class="pron">/sərˈpæs/</div></div>
+        <div class="word-meaning">우월하다</div>
+        <div class="block"><strong>유의어:</strong> exceed, outdo, excel</div>
+        <div class="block"><strong>반의어:</strong> fail, lag</div>
+        <div class="block"><strong>다의어:</strong> to exceed in quality or degree</div>
+        <div class="block"><strong>관련형:</strong> surpassing, surpasses</div>
+        <div class="block"><strong>예문:</strong> His performance surpassed expectations.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Render</div><div class="pron">/ˈrɛndər/</div></div>
+        <div class="word-meaning">되게 하다, 주다</div>
+        <div class="block"><strong>유의어:</strong> make, give, provide</div>
+        <div class="block"><strong>반의어:</strong> keep, withhold</div>
+        <div class="block"><strong>다의어:</strong> to cause to become / to give in a form</div>
+        <div class="block"><strong>관련형:</strong> rendering, renderer</div>
+        <div class="block"><strong>예문:</strong> The new policy rendered the old system useless.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Export</div><div class="pron">/ɪkˈspɔrt/</div></div>
+        <div class="word-meaning">수출하다</div>
+        <div class="block"><strong>유의어:</strong> sell abroad, ship out</div>
+        <div class="block"><strong>반의어:</strong> import, bring in</div>
+        <div class="block"><strong>다의어:</strong> to send goods abroad / to make public</div>
+        <div class="block"><strong>관련형:</strong> export, exporter, exportation</div>
+        <div class="block"><strong>예문:</strong> The country exports rice and cars.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Fulfill</div><div class="pron">/fʊlˈfɪl/</div></div>
+        <div class="word-meaning">실행하다, 이행하다</div>
+        <div class="block"><strong>유의어:</strong> satisfy, complete, carry out</div>
+        <div class="block"><strong>반의어:</strong> fail, neglect</div>
+        <div class="block"><strong>다의어:</strong> to complete / to satisfy a requirement</div>
+        <div class="block"><strong>관련형:</strong> fulfillment, fulfilling</div>
+        <div class="block"><strong>예문:</strong> He fulfilled all his duties.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Inspect</div><div class="pron">/ɪnˈspɛkt/</div></div>
+        <div class="word-meaning">검사하다</div>
+        <div class="block"><strong>유의어:</strong> examine, check, review</div>
+        <div class="block"><strong>반의어:</strong> ignore, neglect</div>
+        <div class="block"><strong>다의어:</strong> to look closely at / to examine</div>
+        <div class="block"><strong>관련형:</strong> inspection, inspector</div>
+        <div class="block"><strong>예문:</strong> The officer inspected the vehicle.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Indulge</div><div class="pron">/ɪnˈdʌldʒ/</div></div>
+        <div class="word-meaning">탐닉하다</div>
+        <div class="block"><strong>유의어:</strong> pamper, indulge, enjoy</div>
+        <div class="block"><strong>반의어:</strong> deny, restrain</div>
+        <div class="block"><strong>다의어:</strong> to give oneself something enjoyable / to allow</div>
+        <div class="block"><strong>관련형:</strong> indulgence, indulgent</div>
+        <div class="block"><strong>예문:</strong> She indulged in a relaxing bath.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Prevail</div><div class="pron">/prɪˈveɪl/</div></div>
+        <div class="word-meaning">유행하다, 우세하다</div>
+        <div class="block"><strong>유의어:</strong> dominate, win, succeed</div>
+        <div class="block"><strong>반의어:</strong> fail, lose</div>
+        <div class="block"><strong>다의어:</strong> to be widespread / to triumph</div>
+        <div class="block"><strong>관련형:</strong> prevalence, prevailing</div>
+        <div class="block"><strong>예문:</strong> Good ideas eventually prevail.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Adjust</div><div class="pron">/əˈdʒʌst/</div></div>
+        <div class="word-meaning">적응시키다</div>
+        <div class="block"><strong>유의어:</strong> adapt, modify, tune</div>
+        <div class="block"><strong>반의어:</strong> leave unchanged</div>
+        <div class="block"><strong>다의어:</strong> to make changes / to fit properly</div>
+        <div class="block"><strong>관련형:</strong> adjustment, adjustable</div>
+        <div class="block"><strong>예문:</strong> She adjusted the chair to fit her height.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Estimate</div><div class="pron">/ˈɛstɪmeɪt/</div></div>
+        <div class="word-meaning">평가하다</div>
+        <div class="block"><strong>유의어:</strong> assess, gauge, appraise</div>
+        <div class="block"><strong>반의어:</strong> know exactly, calculate precisely</div>
+        <div class="block"><strong>다의어:</strong> to judge approximately / a rough calculation</div>
+        <div class="block"><strong>관련형:</strong> estimation, estimator</div>
+        <div class="block"><strong>예문:</strong> We estimate the cost will be high.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Compensate</div><div class="pron">/ˈkɒmpɛnseɪt/</div></div>
+        <div class="word-meaning">배상하다</div>
+        <div class="block"><strong>유의어:</strong> repay, reimburse, offset</div>
+        <div class="block"><strong>반의어:</strong> penalize, take away</div>
+        <div class="block"><strong>다의어:</strong> to make up for loss / to pay for damage</div>
+        <div class="block"><strong>관련형:</strong> compensation, compensatory</div>
+        <div class="block"><strong>예문:</strong> The company compensated the workers.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Restrain</div><div class="pron">/rɪˈstreɪn/</div></div>
+        <div class="word-meaning">제한하다, 억제하다</div>
+        <div class="block"><strong>유의어:</strong> hold back, curb, limit</div>
+        <div class="block"><strong>반의어:</strong> release, unleash</div>
+        <div class="block"><strong>다의어:</strong> to hold back / to keep under control</div>
+        <div class="block"><strong>관련형:</strong> restraint, restrained</div>
+        <div class="block"><strong>예문:</strong> He restrained his anger.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Appreciate</div><div class="pron">/əˈpriːʃieɪt/</div></div>
+        <div class="word-meaning">감상하다, 감사하다</div>
+        <div class="block"><strong>유의어:</strong> value, admire, savor</div>
+        <div class="block"><strong>반의어:</strong> disregard, reject</div>
+        <div class="block"><strong>다의어:</strong> to enjoy and understand the value of / to be thankful for</div>
+        <div class="block"><strong>관련형:</strong> appreciation, appreciative</div>
+        <div class="block"><strong>예문:</strong> I appreciate good art and careful work.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Insist</div><div class="pron">/ɪnˈsɪst/</div></div>
+        <div class="word-meaning">주장하다</div>
+        <div class="block"><strong>유의어:</strong> demand, persist, maintain</div>
+        <div class="block"><strong>반의어:</strong> yield, concede</div>
+        <div class="block"><strong>다의어:</strong> to demand firmly / to persist in</div>
+        <div class="block"><strong>관련형:</strong> insistence, insistent</div>
+        <div class="block"><strong>예문:</strong> She insisted on paying for dinner.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Acknowledge</div><div class="pron">/əkˈnɒlɪdʒ/</div></div>
+        <div class="word-meaning">인정하다</div>
+        <div class="block"><strong>유의어:</strong> admit, recognize, accept</div>
+        <div class="block"><strong>반의어:</strong> deny, ignore</div>
+        <div class="block"><strong>다의어:</strong> to accept or recognize as true / to thank someone</div>
+        <div class="block"><strong>관련형:</strong> acknowledgment, acknowledged</div>
+        <div class="block"><strong>예문:</strong> He acknowledged the mistake.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Distinguish</div><div class="pron">/dɪˈstɪŋɡwɪʃ/</div></div>
+        <div class="word-meaning">구별하다</div>
+        <div class="block"><strong>유의어:</strong> tell apart, differentiate, separate</div>
+        <div class="block"><strong>반의어:</strong> confuse, blend</div>
+        <div class="block"><strong>다의어:</strong> to recognize difference / to make distinctive</div>
+        <div class="block"><strong>관련형:</strong> distinction, distinctive</div>
+        <div class="block"><strong>예문:</strong> It is hard to distinguish one from the other.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Involve</div><div class="pron">/ɪnˈvɒlv/</div></div>
+        <div class="word-meaning">포함하다</div>
+        <div class="block"><strong>유의어:</strong> include, entail, involve</div>
+        <div class="block"><strong>반의어:</strong> exclude, omit</div>
+        <div class="block"><strong>다의어:</strong> to include as a necessary part / to engage deeply</div>
+        <div class="block"><strong>관련형:</strong> involvement, involved</div>
+        <div class="block"><strong>예문:</strong> The project involves several departments.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Intrude</div><div class="pron">/ɪnˈtruːd/</div></div>
+        <div class="word-meaning">침입하다</div>
+        <div class="block"><strong>유의어:</strong> trespass, interfere, intrude</div>
+        <div class="block"><strong>반의어:</strong> stay away, leave alone</div>
+        <div class="block"><strong>다의어:</strong> to enter without permission / to interrupt</div>
+        <div class="block"><strong>관련형:</strong> intrusion, intrusive</div>
+        <div class="block"><strong>예문:</strong> Please don’t intrude without permission.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Torment</div><div class="pron">/ˈtɔːmənt/</div></div>
+        <div class="word-meaning">고문하다, 괴롭히다</div>
+        <div class="block"><strong>유의어:</strong> torture, distress, harass</div>
+        <div class="block"><strong>반의어:</strong> comfort, soothe</div>
+        <div class="block"><strong>다의어:</strong> severe pain / to cause severe suffering</div>
+        <div class="block"><strong>관련형:</strong> torment, tormenting</div>
+        <div class="block"><strong>예문:</strong> The long wait tormented him.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Exhaust</div><div class="pron">/ɪɡˈzɔːst/</div></div>
+        <div class="word-meaning">지치게 하다</div>
+        <div class="block"><strong>유의어:</strong> tire out, drain, deplete</div>
+        <div class="block"><strong>반의어:</strong> energize, refresh</div>
+        <div class="block"><strong>다의어:</strong> to use up completely / to drain of resources</div>
+        <div class="block"><strong>관련형:</strong> exhaustion, exhaustive</div>
+        <div class="block"><strong>예문:</strong> The marathon exhausted him.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Endure</div><div class="pron">/ɪnˈdjʊər/</div></div>
+        <div class="word-meaning">견디다</div>
+        <div class="block"><strong>유의어:</strong> withstand, bear, tolerate</div>
+        <div class="block"><strong>반의어:</strong> collapse, quit</div>
+        <div class="block"><strong>다의어:</strong> to suffer through / to continue despite difficulty</div>
+        <div class="block"><strong>관련형:</strong> endurance, endurable</div>
+        <div class="block"><strong>예문:</strong> We had to endure a long delay.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Hesitate</div><div class="pron">/ˈhɛzɪteɪt/</div></div>
+        <div class="word-meaning">주저하다</div>
+        <div class="block"><strong>유의어:</strong> pause, waver, hesitate</div>
+        <div class="block"><strong>반의어:</strong> hurry, act immediately</div>
+        <div class="block"><strong>다의어:</strong> to be reluctant / to delay because of uncertainty</div>
+        <div class="block"><strong>관련형:</strong> hesitation, hesitant</div>
+        <div class="block"><strong>예문:</strong> Don’t hesitate to call me if you need help.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Substitute</div><div class="pron">/ˈsʌbstɪtuːt/</div></div>
+        <div class="word-meaning">대신하다, 대체하다</div>
+        <div class="block"><strong>유의어:</strong> replace, switch, alternate</div>
+        <div class="block"><strong>반의어:</strong> keep, retain</div>
+        <div class="block"><strong>다의어:</strong> to replace with another / one thing used instead of another</div>
+        <div class="block"><strong>관련형:</strong> substitution, substitutable</div>
+        <div class="block"><strong>예문:</strong> We used oat milk as a substitute for dairy.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Prohibit</div><div class="pron">/prəˈhɪbɪt/</div></div>
+        <div class="word-meaning">금하다</div>
+        <div class="block"><strong>유의어:</strong> forbid, ban, prevent</div>
+        <div class="block"><strong>반의어:</strong> permit, allow</div>
+        <div class="block"><strong>다의어:</strong> to forbid by law or authority</div>
+        <div class="block"><strong>관련형:</strong> prohibition, prohibited</div>
+        <div class="block"><strong>예문:</strong> Smoking is prohibited here.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Forbid</div><div class="pron">/fərˈbɪd/</div></div>
+        <div class="word-meaning">금하다</div>
+        <div class="block"><strong>유의어:</strong> prohibit, ban, disallow</div>
+        <div class="block"><strong>반의어:</strong> allow, permit</div>
+        <div class="block"><strong>다의어:</strong> to refuse to allow / to prohibit</div>
+        <div class="block"><strong>관련형:</strong> forbidden, forbidding</div>
+        <div class="block"><strong>예문:</strong> The school forbids food in class.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Display</div><div class="pron">/dɪˈspleɪ/</div></div>
+        <div class="word-meaning">진열하다, 전시하다</div>
+        <div class="block"><strong>유의어:</strong> show, exhibit, present</div>
+        <div class="block"><strong>반의어:</strong> hide, conceal</div>
+        <div class="block"><strong>다의어:</strong> to show / to exhibit in public</div>
+        <div class="block"><strong>관련형:</strong> display, displayed</div>
+        <div class="block"><strong>예문:</strong> The museum displays ancient artifacts.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Concentrate</div><div class="pron">/ˈkɒnsəntreɪt/</div></div>
+        <div class="word-meaning">집중하다</div>
+        <div class="block"><strong>유의어:</strong> focus, center, fixate</div>
+        <div class="block"><strong>반의어:</strong> distract, wander</div>
+        <div class="block"><strong>다의어:</strong> to focus attention / to gather in one place</div>
+        <div class="block"><strong>관련형:</strong> concentration, concentrated</div>
+        <div class="block"><strong>예문:</strong> Please concentrate on the task.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Yearn</div><div class="pron">/jɜːrn/</div></div>
+        <div class="word-meaning">그리워하다</div>
+        <div class="block"><strong>유의어:</strong> long for, crave, desire</div>
+        <div class="block"><strong>반의어:</strong> ignore, be satisfied</div>
+        <div class="block"><strong>다의어:</strong> to have a deep desire or longing</div>
+        <div class="block"><strong>관련형:</strong> yearning</div>
+        <div class="block"><strong>예문:</strong> He yearns for home.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Forsake</div><div class="pron">/fərˈseɪk/</div></div>
+        <div class="word-meaning">버리다</div>
+        <div class="block"><strong>유의어:</strong> abandon, leave, reject</div>
+        <div class="block"><strong>반의어:</strong> keep, support</div>
+        <div class="block"><strong>다의어:</strong> to abandon or give up</div>
+        <div class="block"><strong>관련형:</strong> forsaken</div>
+        <div class="block"><strong>예문:</strong> He forsook his old habits.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Endeavor</div><div class="pron">/ɪnˈdɛvər/</div></div>
+        <div class="word-meaning">노력하다</div>
+        <div class="block"><strong>유의어:</strong> try, strive, attempt</div>
+        <div class="block"><strong>반의어:</strong> quit, cease</div>
+        <div class="block"><strong>다의어:</strong> to make a serious effort</div>
+        <div class="block"><strong>관련형:</strong> endeavor, endeavoring</div>
+        <div class="block"><strong>예문:</strong> We endeavor to improve every day.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Soothe</div><div class="pron">/suːð/</div></div>
+        <div class="word-meaning">위로하다</div>
+        <div class="block"><strong>유의어:</strong> calm, comfort, reassure</div>
+        <div class="block"><strong>반의어:</strong> upset, startle</div>
+        <div class="block"><strong>다의어:</strong> to calm or comfort</div>
+        <div class="block"><strong>관련형:</strong> soothing, soothed</div>
+        <div class="block"><strong>예문:</strong> The music soothed her nerves.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Congratulate</div><div class="pron">/kənˈɡrætʃəleɪt/</div></div>
+        <div class="word-meaning">축하하다</div>
+        <div class="block"><strong>유의어:</strong> praise, celebrate, compliment</div>
+        <div class="block"><strong>반의어:</strong> criticize, rebuke</div>
+        <div class="block"><strong>다의어:</strong> to express pleasure at another’s success</div>
+        <div class="block"><strong>관련형:</strong> congratulations, congratulatory</div>
+        <div class="block"><strong>예문:</strong> We congratulated him on his promotion.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Confuse</div><div class="pron">/kənˈfjuːz/</div></div>
+        <div class="word-meaning">혼란시키다</div>
+        <div class="block"><strong>유의어:</strong> perplex, muddle, befuddle</div>
+        <div class="block"><strong>반의어:</strong> clarify, simplify</div>
+        <div class="block"><strong>다의어:</strong> to make uncertain / to mix up</div>
+        <div class="block"><strong>관련형:</strong> confusion, confusing</div>
+        <div class="block"><strong>예문:</strong> The new instructions confused everyone.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Improve</div><div class="pron">/ɪmˈpruːv/</div></div>
+        <div class="word-meaning">개선하다</div>
+        <div class="block"><strong>유의어:</strong> enhance, refine, better</div>
+        <div class="block"><strong>반의어:</strong> worsen, degrade</div>
+        <div class="block"><strong>다의어:</strong> to make better / to advance</div>
+        <div class="block"><strong>관련형:</strong> improvement, improved</div>
+        <div class="block"><strong>예문:</strong> He wants to improve his English skills.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Diffuse</div><div class="pron">/dɪˈfjuːz/</div></div>
+        <div class="word-meaning">보급하다, 퍼뜨리다</div>
+        <div class="block"><strong>유의어:</strong> spread, disperse, circulate</div>
+        <div class="block"><strong>반의어:</strong> concentrate, gather</div>
+        <div class="block"><strong>다의어:</strong> to spread out / to make less intense</div>
+        <div class="block"><strong>관련형:</strong> diffusion, diffusely</div>
+        <div class="block"><strong>예문:</strong> The news diffused quickly through the city.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Alter</div><div class="pron">/ˈɔːltər/</div></div>
+        <div class="word-meaning">바꾸다</div>
+        <div class="block"><strong>유의어:</strong> change, modify, revise</div>
+        <div class="block"><strong>반의어:</strong> keep, retain</div>
+        <div class="block"><strong>다의어:</strong> to make different / to adjust</div>
+        <div class="block"><strong>관련형:</strong> alteration, alternate</div>
+        <div class="block"><strong>예문:</strong> We altered the plan after the meeting.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Speculate</div><div class="pron">/ˈspɛkjəleɪt/</div></div>
+        <div class="word-meaning">사색하다, 추측하다</div>
+        <div class="block"><strong>유의어:</strong> theorize, guess, conjecture</div>
+        <div class="block"><strong>반의어:</strong> know, confirm</div>
+        <div class="block"><strong>다의어:</strong> to guess / to trade in financial speculation</div>
+        <div class="block"><strong>관련형:</strong> speculation, speculative</div>
+        <div class="block"><strong>예문:</strong> We can only speculate about the outcome.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Recover</div><div class="pron">/rɪˈkʌvər/</div></div>
+        <div class="word-meaning">회복하다</div>
+        <div class="block"><strong>유의어:</strong> regain, heal, restore</div>
+        <div class="block"><strong>반의어:</strong> lose, worsen</div>
+        <div class="block"><strong>다의어:</strong> to get back to health / to retrieve</div>
+        <div class="block"><strong>관련형:</strong> recovery, recoverable</div>
+        <div class="block"><strong>예문:</strong> She recovered quickly from the flu.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Urge</div><div class="pron">/ɜːrdʒ/</div></div>
+        <div class="word-meaning">촉구하다, 역설하다</div>
+        <div class="block"><strong>유의어:</strong> push, encourage, prompt</div>
+        <div class="block"><strong>반의어:</strong> discourage, restrain</div>
+        <div class="block"><strong>다의어:</strong> to strongly encourage / to push to do something</div>
+        <div class="block"><strong>관련형:</strong> urgency, urgent</div>
+        <div class="block"><strong>예문:</strong> I urge you to take this seriously.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Command</div><div class="pron">/kəˈmɑːnd/</div></div>
+        <div class="word-meaning">명령하다, 지휘하다</div>
+        <div class="block"><strong>유의어:</strong> order, direct, control</div>
+        <div class="block"><strong>반의어:</strong> obey, follow</div>
+        <div class="block"><strong>다의어:</strong> to give orders / to have authority over</div>
+        <div class="block"><strong>관련형:</strong> commander, commandment</div>
+        <div class="block"><strong>예문:</strong> The officer commanded the team.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Warn</div><div class="pron">/wɔːrn/</div></div>
+        <div class="word-meaning">경고하다</div>
+        <div class="block"><strong>유의어:</strong> caution, advise, alert</div>
+        <div class="block"><strong>반의어:</strong> assure, comfort</div>
+        <div class="block"><strong>다의어:</strong> to tell of danger / to caution</div>
+        <div class="block"><strong>관련형:</strong> warning, warned</div>
+        <div class="block"><strong>예문:</strong> The sign warns of slippery floors.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Transport</div><div class="pron">/trænˈspɔːrt/</div></div>
+        <div class="word-meaning">수송하다</div>
+        <div class="block"><strong>유의어:</strong> carry, move, convey</div>
+        <div class="block"><strong>반의어:</strong> keep, leave</div>
+        <div class="block"><strong>다의어:</strong> to carry from one place to another / emotional excitement</div>
+        <div class="block"><strong>관련형:</strong> transportation, transported</div>
+        <div class="block"><strong>예문:</strong> Goods were transported by ship.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Ignore</div><div class="pron">/ɪɡˈnɔːr/</div></div>
+        <div class="word-meaning">무시하다</div>
+        <div class="block"><strong>유의어:</strong> disregard, neglect, overlook</div>
+        <div class="block"><strong>반의어:</strong> notice, address</div>
+        <div class="block"><strong>다의어:</strong> to refuse to notice / to disregard</div>
+        <div class="block"><strong>관련형:</strong> ignorance, ignored</div>
+        <div class="block"><strong>예문:</strong> They ignored the warning sign.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Conceal</div><div class="pron">/kənˈsiːl/</div></div>
+        <div class="word-meaning">감추다</div>
+        <div class="block"><strong>유의어:</strong> hide, cover, mask</div>
+        <div class="block"><strong>반의어:</strong> reveal, show</div>
+        <div class="block"><strong>다의어:</strong> to hide from view / to keep secret</div>
+        <div class="block"><strong>관련형:</strong> concealment, concealed</div>
+        <div class="block"><strong>예문:</strong> He tried to conceal the truth.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Utter</div><div class="pron">/ˈʌtər/</div></div>
+        <div class="word-meaning">말하다; 완전한</div>
+        <div class="block"><strong>유의어:</strong> say, speak, pronounce</div>
+        <div class="block"><strong>반의어:</strong> hold back, suppress</div>
+        <div class="block"><strong>다의어:</strong> to speak / complete, total</div>
+        <div class="block"><strong>관련형:</strong> utterance, uttermost</div>
+        <div class="block"><strong>예문:</strong> She uttered a small gasp.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Flatter</div><div class="pron">/ˈflætər/</div></div>
+        <div class="word-meaning">아첨하다</div>
+        <div class="block"><strong>유의어:</strong> praise, compliment, cajole</div>
+        <div class="block"><strong>반의어:</strong> criticize, insult</div>
+        <div class="block"><strong>다의어:</strong> to praise excessively / to please someone</div>
+        <div class="block"><strong>관련형:</strong> flattery, flattering</div>
+        <div class="block"><strong>예문:</strong> He flattered her to get what he wanted.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Absorb</div><div class="pron">/əbˈzɔːrb/</div></div>
+        <div class="word-meaning">흡수하다, 열중하다</div>
+        <div class="block"><strong>유의어:</strong> soak up, take in, consume</div>
+        <div class="block"><strong>반의어:</strong> release, emit</div>
+        <div class="block"><strong>다의어:</strong> to take in / to become engrossed</div>
+        <div class="block"><strong>관련형:</strong> absorption, absorbent</div>
+        <div class="block"><strong>예문:</strong> The sponge absorbs water quickly.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Yield</div><div class="pron">/jiːld/</div></div>
+        <div class="word-meaning">양보하다, 굴복하다</div>
+        <div class="block"><strong>유의어:</strong> surrender, concede, give way</div>
+        <div class="block"><strong>반의어:</strong> resist, stand firm</div>
+        <div class="block"><strong>다의어:</strong> to surrender / produce, amount</div>
+        <div class="block"><strong>관련형:</strong> yield, yielding</div>
+        <div class="block"><strong>예문:</strong> The tree yielded many fruits this year.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Meditate</div><div class="pron">/ˈmɛdɪteɪt/</div></div>
+        <div class="word-meaning">숙고하다</div>
+        <div class="block"><strong>유의어:</strong> contemplate, reflect, ponder</div>
+        <div class="block"><strong>반의어:</strong> ignore, dismiss</div>
+        <div class="block"><strong>다의어:</strong> to reflect deeply / to think in silence</div>
+        <div class="block"><strong>관련형:</strong> meditation, meditative</div>
+        <div class="block"><strong>예문:</strong> I meditate every morning.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Perform</div><div class="pron">/pərˈfɔːrm/</div></div>
+        <div class="word-meaning">수행하다, 연기하다</div>
+        <div class="block"><strong>유의어:</strong> carry out, act, do</div>
+        <div class="block"><strong>반의어:</strong> fail, neglect</div>
+        <div class="block"><strong>다의어:</strong> to execute / to act on stage</div>
+        <div class="block"><strong>관련형:</strong> performance, performer</div>
+        <div class="block"><strong>예문:</strong> She performed brilliantly on stage.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Embarrass</div><div class="pron">/ɪmˈbærəs/</div></div>
+        <div class="word-meaning">난처하게 하다</div>
+        <div class="block"><strong>유의어:</strong> shame, humiliate, unsettle</div>
+        <div class="block"><strong>반의어:</strong> reassure, comfort</div>
+        <div class="block"><strong>다의어:</strong> to make someone feel self-conscious</div>
+        <div class="block"><strong>관련형:</strong> embarrassment, embarrassed</div>
+        <div class="block"><strong>예문:</strong> His joke embarrassed her.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Reproach</div><div class="pron">/rɪˈproʊtʃ/</div></div>
+        <div class="word-meaning">비난하다</div>
+        <div class="block"><strong>유의어:</strong> blame, criticize, scold</div>
+        <div class="block"><strong>반의어:</strong> praise, commend</div>
+        <div class="block"><strong>다의어:</strong> to express disapproval</div>
+        <div class="block"><strong>관련형:</strong> reproach, reproachful</div>
+        <div class="block"><strong>예문:</strong> She reproached him for being late.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Bewilder</div><div class="pron">/bɪˈwɪldər/</div></div>
+        <div class="word-meaning">당황하게 하다</div>
+        <div class="block"><strong>유의어:</strong> confuse, puzzle, perplex</div>
+        <div class="block"><strong>반의어:</strong> clarify, soothe</div>
+        <div class="block"><strong>다의어:</strong> to confuse completely</div>
+        <div class="block"><strong>관련형:</strong> bewilderment</div>
+        <div class="block"><strong>예문:</strong> The instructions bewildered her.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Overcome</div><div class="pron">/ˌoʊvərˈkʌm/</div></div>
+        <div class="word-meaning">극복하다</div>
+        <div class="block"><strong>유의어:</strong> conquer, beat, prevail</div>
+        <div class="block"><strong>반의어:</strong> fail, surrender</div>
+        <div class="block"><strong>다의어:</strong> to succeed in dealing with / to overpower</div>
+        <div class="block"><strong>관련형:</strong> overcoming, overcome</div>
+        <div class="block"><strong>예문:</strong> She overcame many obstacles.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Assert</div><div class="pron">/əˈsɜːrt/</div></div>
+        <div class="word-meaning">주장하다</div>
+        <div class="block"><strong>유의어:</strong> claim, affirm, declare</div>
+        <div class="block"><strong>반의어:</strong> deny, retract</div>
+        <div class="block"><strong>다의어:</strong> to state firmly / to maintain as true</div>
+        <div class="block"><strong>관련형:</strong> assertion, assertive</div>
+        <div class="block"><strong>예문:</strong> He asserted his innocence.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Recognize</div><div class="pron">/ˈrɛkəɡnaɪz/</div></div>
+        <div class="word-meaning">인식하다</div>
+        <div class="block"><strong>유의어:</strong> identify, see, acknowledge</div>
+        <div class="block"><strong>반의어:</strong> ignore, overlook</div>
+        <div class="block"><strong>다의어:</strong> to know again / to admit openly</div>
+        <div class="block"><strong>관련형:</strong> recognition, recognizable</div>
+        <div class="block"><strong>예문:</strong> I recognized her immediately.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Admit</div><div class="pron">/ədˈmɪt/</div></div>
+        <div class="word-meaning">인정하다</div>
+        <div class="block"><strong>유의어:</strong> confess, accept, concede</div>
+        <div class="block"><strong>반의어:</strong> deny, reject</div>
+        <div class="block"><strong>다의어:</strong> to confess / to allow entry</div>
+        <div class="block"><strong>관련형:</strong> admission, admittance</div>
+        <div class="block"><strong>예문:</strong> He admitted the mistake.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Persecute</div><div class="pron">/ˈpɜːsɪkjuːt/</div></div>
+        <div class="word-meaning">박해하다</div>
+        <div class="block"><strong>유의어:</strong> harass, oppress, hound</div>
+        <div class="block"><strong>반의어:</strong> protect, comfort</div>
+        <div class="block"><strong>다의어:</strong> to treat badly because of beliefs or identity</div>
+        <div class="block"><strong>관련형:</strong> persecution, persecutor</div>
+        <div class="block"><strong>예문:</strong> They persecuted the minority group.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Launch</div><div class="pron">/lɔːntʃ/</div></div>
+        <div class="word-meaning">출시하다, 시작하다</div>
+        <div class="block"><strong>유의어:</strong> begin, start, initiate</div>
+        <div class="block"><strong>반의어:</strong> stop, cancel</div>
+        <div class="block"><strong>다의어:</strong> to start a campaign or product / to send a rocket</div>
+        <div class="block"><strong>관련형:</strong> launch, launcher</div>
+        <div class="block"><strong>예문:</strong> The company launched a new product.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Pretend</div><div class="pron">/prɪˈtɛnd/</div></div>
+        <div class="word-meaning">~인 체하다</div>
+        <div class="block"><strong>유의어:</strong> act, feign, simulate</div>
+        <div class="block"><strong>반의어:</strong> reveal, confess</div>
+        <div class="block"><strong>다의어:</strong> to act as if something is true</div>
+        <div class="block"><strong>관련형:</strong> pretense, pretended</div>
+        <div class="block"><strong>예문:</strong> She pretended not to hear me.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Circulate</div><div class="pron">/ˈsɜːkjəleɪt/</div></div>
+        <div class="word-meaning">순환하다, 유통하다</div>
+        <div class="block"><strong>유의어:</strong> spread, distribute, move around</div>
+        <div class="block"><strong>반의어:</strong> store, gather</div>
+        <div class="block"><strong>다의어:</strong> to move around / to distribute widely</div>
+        <div class="block"><strong>관련형:</strong> circulation, circulatory</div>
+        <div class="block"><strong>예문:</strong> The rumor circulated quickly.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Contemplate</div><div class="pron">/ˈkɒntəmpleɪt/</div></div>
+        <div class="word-meaning">깊이 생각하다</div>
+        <div class="block"><strong>유의어:</strong> consider, reflect, ponder</div>
+        <div class="block"><strong>반의어:</strong> ignore, dismiss</div>
+        <div class="block"><strong>다의어:</strong> to think about seriously / to plan for</div>
+        <div class="block"><strong>관련형:</strong> contemplation, contemplative</div>
+        <div class="block"><strong>예문:</strong> I need time to contemplate the decision.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Cope</div><div class="pron">/koʊp/</div></div>
+        <div class="word-meaning">대처하다, 맞서다</div>
+        <div class="block"><strong>유의어:</strong> handle, manage, deal with</div>
+        <div class="block"><strong>반의어:</strong> fail, collapse</div>
+        <div class="block"><strong>다의어:</strong> to manage successfully / to deal with difficulty</div>
+        <div class="block"><strong>관련형:</strong> coping, cope</div>
+        <div class="block"><strong>예문:</strong> She can cope with pressure.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Adapt</div><div class="pron">/əˈdæpt/</div></div>
+        <div class="word-meaning">적응시키다</div>
+        <div class="block"><strong>유의어:</strong> adjust, modify, acclimate</div>
+        <div class="block"><strong>반의어:</strong> resist, refuse</div>
+        <div class="block"><strong>다의어:</strong> to change to suit new conditions</div>
+        <div class="block"><strong>관련형:</strong> adaptation, adaptable</div>
+        <div class="block"><strong>예문:</strong> Animals adapt to their environment.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Alarm</div><div class="pron">/əˈlɑːrm/</div></div>
+        <div class="word-meaning">놀라게 하다</div>
+        <div class="block"><strong>유의어:</strong> startle, frighten, warn</div>
+        <div class="block"><strong>반의어:</strong> reassure, calm</div>
+        <div class="block"><strong>다의어:</strong> to warn or frighten / a device that warns</div>
+        <div class="block"><strong>관련형:</strong> alarming, alarmed</div>
+        <div class="block"><strong>예문:</strong> The loud noise alarmed everyone.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Adopt</div><div class="pron">/əˈdɒpt/</div></div>
+        <div class="word-meaning">채택하다, 입양하다</div>
+        <div class="block"><strong>유의어:</strong> accept, choose, take in</div>
+        <div class="block"><strong>반의어:</strong> reject, refuse</div>
+        <div class="block"><strong>다의어:</strong> to take as one’s own / to start using</div>
+        <div class="block"><strong>관련형:</strong> adoption, adoptive</div>
+        <div class="block"><strong>예문:</strong> They adopted a child.</div>
+      </article>
+
+      <article class="list-card">
+        <div class="title-row"><div class="word-title">Submit</div><div class="pron">/səbˈmɪt/</div></div>
+        <div class="word-meaning">복종시키다, 제출하다</div>
+        <div class="block"><strong>유의어:</strong> surrender, present, send</div>
+        <div class="block"><strong>반의어:</strong> resist, refuse</div>
+        <div class="block"><strong>다의어:</strong> to hand in / to yield to authority</div>
+        <div class="block"><strong>관련형:</strong> submission, submissive</div>
+        <div class="block"><strong>예문:</strong> Please submit the report before Friday.</div>
+      </article>
 
     </div>
   </section>
@@ -215,7 +1234,7 @@ button:focus{outline:3px solid rgba(98,89,217,0.18);outline-offset:2px}
   <section id="quiz" class="view" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
       <h2 style="margin:0">퀴즈</h2>
-      <div style="color:var(--muted)">'퀴즈 창 열기'로 전체화면 퀴즈 실행</div>
+      <div style="color:var(--muted)">'퀴즈 창 열기'로 전체화면 퀴즈</div>
     </div>
     <div id="quizArea" style="background:var(--paper);border:1px solid var(--line);padding:0.9rem;border-radius:10px">
       <div id="mcQuestion" style="font-weight:900;font-size:1.125rem">퀴즈를 시작하세요</div>
@@ -263,30 +1282,29 @@ button:focus{outline:3px solid rgba(98,89,217,0.18);outline-offset:2px}
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* Client JS: dynamic features preserved (검색, today, quiz, TTS, panel drag, download)
-   - If JS runs (Safari / Chrome), it will attach behavior and enhance the pre-rendered cards.
-   - If JS doesn't run (Quick Look), the pre-rendered cards remain visible.
-*/
-
+/* Shared logic: works on desktop, tablet, iPad, phone */
 function $(id){ return document.getElementById(id); }
 function showToast(msg, time=2500){ const t=$('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._to); t._to=setTimeout(()=>t.style.display='none', time); }
 function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
 function escapeForInline(s){ return (s||'').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
 
-/* For simplicity reuse a small words set (already pre-rendered). We'll still build a JS array from DOM for search */
+/* Build dynamic words from DOM for search/quiz/today generation */
 let words = [];
-
-/* Build words from pre-rendered DOM to preserve data for search/quiz without duplicating big arrays */
 function buildWordsFromDOM(){
   const grid = $('listGrid');
   if(!grid) return;
   words = [];
-  const cards = grid.querySelectorAll('.list-card');
-  cards.forEach(card=>{
-    const en = (card.querySelector('.word-title')||{}).textContent||'';
-    const ko = (card.querySelector('.word-meaning')||{}).textContent||'';
-    const pron = (card.querySelector('.pron')||{}).textContent||'';
-    words.push({en, ko, pron, enLower:en.toLowerCase(), koLower:ko.toLowerCase()});
+  grid.querySelectorAll('.list-card').forEach(card=>{
+    const en = (card.querySelector('.word-title')||{}).textContent || '';
+    const ko = (card.querySelector('.word-meaning')||{}).textContent || '';
+    const pron = (card.querySelector('.pron')||{}).textContent || '';
+    words.push({
+      en: en.trim(),
+      ko: ko.trim(),
+      pron: pron.trim(),
+      enLower: en.toLowerCase(),
+      koLower: ko.toLowerCase()
+    });
   });
 }
 
@@ -296,180 +1314,14 @@ function speak(text){
   if(!document.getElementById('enableTTS').checked) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US"; u.rate = 0.92;
+  u.lang = "en-US";
+  u.rate = 0.92;
   const voices = speechSynthesis.getVoices();
   const v = voices.find(x=>x.lang==="en-US") || voices.find(x=>x.lang && x.lang.startsWith("en"));
   if(v) u.voice = v;
   speechSynthesis.speak(u);
 }
 
-/* Search + render: we will hide/show pre-rendered cards instead of re-creating DOM */
+/* Search */
 function renderListView(){
-  const q = ($('globalSearch').value||'').trim().toLowerCase();
-  const grid = $('listGrid');
-  if(!grid) return;
-  const cards = grid.querySelectorAll('.list-card');
-  if(!q){
-    cards.forEach(c=>c.style.display='');
-    return;
-  }
-  cards.forEach(c=>{
-    const en = (c.querySelector('.word-title')||{}).textContent||'';
-    const ko = (c.querySelector('.word-meaning')||{}).textContent||'';
-    const hay = (en+' '+ko).toLowerCase();
-    c.style.display = hay.includes(q) ? '' : 'none';
-  });
-}
-
-/* Today list: pick random from words array (built from DOM) */
-const TODAY_KEY='oneul_today_v2';
-function sampleToday(count=20){
-  if(words.length===0) buildWordsFromDOM();
-  const allowDup = !!document.getElementById('allowDupChk').checked;
-  const n = words.length;
-  if(allowDup){ const out=[]; for(let i=0;i<count;i++) out.push(words[Math.floor(Math.random()*n)]); return out; }
-  if(n <= count){ return shuffle(words).slice(0,count); }
-  return shuffle(words).slice(0,count);
-}
-function regenerateToday(){
-  const now=(new Date()).toISOString().slice(0,10);
-  const list = sampleToday(20);
-  try{ localStorage.setItem(TODAY_KEY, JSON.stringify({date:now, list})); }catch(e){}
-  renderToday();
-}
-function getTodayList(){
-  try{
-    const raw = localStorage.getItem(TODAY_KEY);
-    const today=(new Date()).toISOString().slice(0,10);
-    if(!raw){ regenerateToday(); }
-    const parsed = JSON.parse(localStorage.getItem(TODAY_KEY));
-    if(!parsed || parsed.date !== today){ regenerateToday(); return JSON.parse(localStorage.getItem(TODAY_KEY)).list; }
-    return parsed.list;
-  }catch(e){ regenerateToday(); return JSON.parse(localStorage.getItem(TODAY_KEY)).list; }
-}
-function renderToday(){
-  const root = $('todayList'); if(!root) return;
-  root.innerHTML = '';
-  const list = getTodayList();
-  list.forEach((w,i)=>{
-    const row = document.createElement('div'); row.className='today-row';
-    row.innerHTML = `<div><strong>${i+1}. ${w.en}</strong><div style="color:var(--muted)">${w.ko}</div></div>`;
-    const right = document.createElement('div'); right.style.display='flex'; right.style.gap='0.5rem';
-    const play = document.createElement('button'); play.className='small'; play.textContent='🔊'; play.addEventListener('click',()=>speak(w.en));
-    right.append(play); row.appendChild(right); root.appendChild(row);
-  });
-}
-
-/* Panels (draggable) */
-const panelsRoot = $('panelsRoot');
-let panelCounter = 0;
-function openPanel(opts){ const id='panel-'+(panelCounter++); const panel=document.createElement('div'); panel.className='panel'; panel.id=id; panel.style.left=(20+panelCounter*12)+'px'; panel.style.top=(60+panelCounter*10)+'px'; panel.innerHTML=`<div class="head" role="button" aria-label="패널 이동">${opts.title}<div><button class="closePanel" aria-label="닫기">✕</button></div></div><div class="body">${opts.html}</div>`; panelsRoot.appendChild(panel); panel.querySelector('.closePanel').addEventListener('click', ()=>panel.remove()); makeDraggable(panel); panelsRoot.setAttribute('aria-hidden','false'); }
-function openPanelForWordFromObj(w){
-  const html = `<div><div style="font-weight:900">${w.en} <span style="color:var(--muted);font-weight:700">${w.pron||''}</span></div><div style="color:var(--muted);margin-top:8px">${w.ko||''}</div><div style="margin-top:10px"><button class="small" onclick="window.speak('${escapeForInline(w.en)}')">🔊 발음</button></div></div>`;
-  openPanel({title:w.en, html});
-}
-function openPanelForWord(w){
-  // w could be a DOM-sourced object or original object
-  openPanelForWordFromObj({en:w.en||w.en, ko:w.ko||w.ko, pron:w.pron||w.pron});
-}
-
-function makeDraggable(panel){
-  const head=panel.querySelector('.head');
-  if(!head) return;
-  head.addEventListener('mousedown', startDrag);
-  head.addEventListener('touchstart', startDrag, {passive:false});
-  function startDrag(e){
-    e.preventDefault();
-    const isTouch = e.type==='touchstart';
-    const startX = isTouch ? e.touches[0].clientX : e.clientX;
-    const startY = isTouch ? e.touches[0].clientY : e.clientY;
-    const rect = panel.getBoundingClientRect();
-    const shiftX = startX - rect.left;
-    const shiftY = startY - rect.top;
-    function move(e2){
-      const cx = (e2.touches ? e2.touches[0].clientX : e2.clientX);
-      const cy = (e2.touches ? e2.touches[0].clientY : e2.clientY);
-      panel.style.left = Math.max(8, cx - shiftX) + 'px';
-      panel.style.top  = Math.max(8, cy - shiftY) + 'px';
-    }
-    function up(){ document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); document.removeEventListener('touchmove', move); document.removeEventListener('touchend', up); }
-    document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
-    document.addEventListener('touchmove', move, {passive:false}); document.addEventListener('touchend', up);
-  }
-}
-
-/* Quiz (uses words built from DOM) */
-const quizBackdrop = $('quizModalBackdrop');
-function openFullQuiz(){
-  if(words.length===0) buildWordsFromDOM();
-  quizBackdrop.style.display='flex';
-  quizBackdrop.setAttribute('aria-hidden','false');
-  const qEl = $('fullQ'), sub = $('fullQsub'), choicesEl = $('fullChoices'), feedback = $('fullFeedback');
-  const nextBtn = $('fullNext'), startBtn = $('fullStart');
-  let deck = shuffle(words).slice(0,10); let idx = 0; let answered=false;
-  function renderQuestion(){
-    answered=false; nextBtn.disabled=true; feedback.textContent='';
-    const w = deck[idx]; qEl.textContent = w.en; sub.textContent = w.ko || '';
-    choicesEl.innerHTML = '';
-    const options = shuffle([w, ...shuffle(words.filter(x=>x.en!==w.en)).slice(0,3)]);
-    options.forEach(opt=>{
-      const b = document.createElement('button'); b.className='choiceBtn'; b.textContent = opt.ko || opt.en;
-      b.onclick = ()=>{
-        if(answered) return; answered=true;
-        if(opt.en === w.en){ b.classList.add('correct'); feedback.textContent='정답입니다!'; } else { b.classList.add('wrong'); feedback.textContent='오답 — 정답: ' + w.ko; }
-        [...choicesEl.querySelectorAll('.choiceBtn')].forEach(btn=>{ if(btn.textContent === w.ko) btn.classList.add('correct'); });
-        nextBtn.disabled=false;
-      };
-      choicesEl.appendChild(b);
-    });
-    if(document.getElementById('enableTTS').checked) speak(w.en);
-  }
-  startBtn.onclick = ()=>{ deck = shuffle(words).slice(0,10); idx=0; renderQuestion(); };
-  nextBtn.onclick = ()=>{ if(nextBtn.disabled) return; idx++; if(idx>=deck.length){ qEl.textContent='퀴즈 완료!'; choicesEl.innerHTML=''; feedback.textContent='모든 문제를 풀었습니다.'; nextBtn.disabled=true; } else renderQuestion(); };
-  renderQuestion();
-}
-function closeFullQuiz(){ quizBackdrop.style.display='none'; quizBackdrop.setAttribute('aria-hidden','true'); }
-
-/* Improved download for iPad: uses blob -> open in new tab for iOS, anchor download for others */
-function isIPad(){ return /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
-async function downloadAppFile(filename='index_Version7_Version7_responsive_fixed.html'){
-  try{
-    const docClone = document.documentElement.cloneNode(true);
-    const doctype = "<!doctype html>\n";
-    const html = docClone.outerHTML;
-    const blob = new Blob([doctype + html], {type: 'text/html;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    if(window.showSaveFilePicker){
-      try{
-        const handle = await window.showSaveFilePicker({ suggestedName: filename, types:[{description:'HTML', accept:{'text/html':['.html']}}] });
-        const w = await handle.createWritable(); await w.write(blob); await w.close(); showToast('파일이 저장되었습니다.'); return;
-      }catch(e){ console.warn('saveFilePicker failed', e); }
-    }
-    if(isIPad() || /iPhone|iPod/.test(navigator.userAgent)){
-      const w = window.open(url, '_blank');
-      if(w){ showToast('새 탭에서 파일이 열렸습니다. 공유 → 파일에 저장을 사용하세요.'); } else { const a=document.createElement('a'); a.href=url; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove(); showToast('팝업 차단됩니다. 열린 탭에서 저장하세요.'); }
-      setTimeout(()=>URL.revokeObjectURL(url), 5000); return;
-    }
-    const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 2000); showToast('다운로드 시작'); 
-  }catch(err){ console.error(err); showToast('다운로드 실패'); }
-}
-
-/* bindings */
-$('downloadApp').addEventListener('click', ()=>downloadAppFile());
-document.querySelectorAll('.tab').forEach(tab=>{ tab.addEventListener('click', ()=>{ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); const view=tab.dataset.view; document.querySelectorAll('.view').forEach(v=>v.style.display='none'); const el=document.getElementById(view); if(el) el.style.display = ''; layoutAndRender(); }); });
-$('globalSearch').addEventListener('input', ()=>{ renderListView(); });
-if($('regenTodayBtn')) $('regenTodayBtn').addEventListener('click', ()=>regenerateToday());
-if($('regenSentBtn')) $('regenSentBtn').addEventListener('click', ()=>regenerateSentences());
-if($('openQuizPanel')) $('openQuizPanel').addEventListener('click', ()=>openFullQuiz());
-if($('closeQuizModal')) $('closeQuizModal').addEventListener('click', ()=>closeFullQuiz());
-
-/* Initialization */
-function layoutAndRender(){ buildWordsFromDOM(); renderListView(); renderToday(); renderSentences(); }
-layoutAndRender();
-
-/* expose */
-window._app = { buildWordsFromDOM, renderListView, downloadAppFile };
-</script>
-
-</body>
-</html>
+  const q = ($('globalSearch').value||'').trim
